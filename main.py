@@ -46,15 +46,44 @@ def show_game_over_screen():
     game_over_text = game_over_font.render("Game Over", True, setings.RED)
     screen.blit(game_over_text, (setings.SCREEN_WIDTH // 2 - game_over_text.get_width() // 2,
                                  setings.SCREEN_HEIGHT // 2 - game_over_text.get_height() // 2))
+
+    # Draw the restart button
+    restart_button = pygame.Rect(setings.SCREEN_WIDTH // 2 - 100, setings.SCREEN_HEIGHT // 2 + 50, 200, 50)
+    pygame.draw.rect(screen, setings.WHITE, restart_button)
+    restart_text = font.render("Restart", True, setings.BLACK)
+    screen.blit(restart_text, (restart_button.x + 50, restart_button.y + 10))
+
     pygame.display.flip()
-    pygame.time.wait(3000)
+
+    # Wait for user to click the restart button
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if restart_button.collidepoint(event.pos):
+                    waiting = False
+
 
 # Initialize game state
-running = True
-game_level = 1
-create_obstacles(game_level)
-obstacles_cleared = 0
+def reset_game():
+    global all_sprites, obstacles, bullets, player, game_level, obstacles_cleared
+    all_sprites = pygame.sprite.Group()
+    obstacles = pygame.sprite.Group()
+    bullets = pygame.sprite.Group()
+    player = Player.Player()
+    all_sprites.add(player)
+    game_level = 1
+    obstacles_cleared = 0
+    create_obstacles(game_level)
 
+
+reset_game()
+
+# Main game loop
+running = True
 while running:
     clock.tick(setings.FPS)
 
@@ -77,16 +106,15 @@ while running:
         if hits:
             bullet.kill()
             obstacles_cleared += 1
-            print(obstacles_cleared)
-            if obstacles_cleared == 6:  # Increase level after clearing 6 obstacles
+            if obstacles_cleared == 5:  # Increase level after clearing 5 obstacles
                 game_level += 1
                 obstacles_cleared = 0
                 create_obstacles(game_level)
 
     # Check for collisions between player and obstacles
     if pygame.sprite.spritecollideany(player, obstacles):
-        running = False
         show_game_over_screen()
+        reset_game()
 
     # Draw everything
     screen.fill(setings.BLACK)
