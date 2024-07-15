@@ -1,0 +1,10 @@
+# Constants
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 800
+HEADER_HEIGHT = 100
+FPS = 50
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
