@@ -33,12 +33,14 @@ bullets = pygame.sprite.Group()
 player = Player.Player()
 all_sprites.add(player)
 
+
 # Function to create obstacles based on level
 def create_obstacles(level):
     for _ in range(5 + level):  # Increase number of obstacles with level
         obstacle = Obstacle.Obstacle()
         all_sprites.add(obstacle)
         obstacles.add(obstacle)
+
 
 # Function to display the "Game Over" screen
 def show_game_over_screen():
@@ -115,6 +117,12 @@ while running:
     if pygame.sprite.spritecollideany(player, obstacles):
         show_game_over_screen()
         reset_game()
+
+    # Check if any obstacle has reached the bottom of the screen
+    # for obstacle in obstacles:
+    #     if obstacle.rect.bottom >= setings.SCREEN_HEIGHT:
+    #         show_game_over_screen()
+    #         reset_game()
 
     # Draw everything
     screen.fill(setings.BLACK)
