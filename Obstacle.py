@@ -3,7 +3,7 @@ import setings
 import random
 
 obstacle_image = pygame.image.load('photos/women_model_4k_hd-hd_wallpapers.jpg')
-obstacle_image = pygame.transform.scale(obstacle_image, (50, 50))
+obstacle_image = pygame.transform.scale(obstacle_image, (70, 70))
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
